@@ -1,0 +1,36 @@
+{
+	"name": "production-management",
+	"version": "1.0.0",
+	"description": "Production Management Application",
+	"main": "index.js",
+	"scripts": {
+		"start": "ts-node index.ts -watch",
+		"start:dev": "tsnd index.ts -watch"
+	},
+	"keywords": [
+		"Management",
+		"Production",
+		"Quality",
+		"Performance"
+	],
+	"author": "Paweł Urasiński",
+	"license": "ISC",
+	"dependencies": {
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2",
+		"express-async-errors": "^3.1.1",
+		"express-handlebars": "^6.0.6",
+		"method-override": "^3.0.0",
+		"mysql2": "^2.3.3",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"@types/express": "^4.17.14",
+		"@types/method-override": "^0.0.32",
+		"@types/node": "^18.11.11",
+		"@types/uuid": "^9.0.0",
+		"ts-node": "^10.9.1",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^4.9.3"
+	}
+}
