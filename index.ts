@@ -3,6 +3,9 @@ import 'express-async-errors';
 import { static as expressStatic, urlencoded } from 'express';
 import { engine } from 'express-handlebars';
 import * as methodOverride from 'method-override';
+import { homeRouter } from './routers/home';
+import { workerRouter } from './routers/worker';
+import { adminRouter } from './routers/admin';
 
 const app = express();
 
@@ -23,12 +26,11 @@ app.engine(
 
 app.set('view engine', '.hbs');
 
-app.get('/', (req, res) => {
-	res.send('Hello world');
-});
-
+app.use('/', homeRouter);
+app.use('/admin', adminRouter);
+app.use('/worker', workerRouter);
 //app.use(handleError)
 
-app.listen(3000, 'localhost', () => {
-	console.log('Server is listening on ...');
+app.listen(3001, '0.0.0.0', () => {
+	console.log('Server is listening on http://localhost:3001');
 });
