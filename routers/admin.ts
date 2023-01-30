@@ -14,7 +14,7 @@ adminRouter
 
 	.post('/', async (req: Request, res: Response): Promise<void> => {
 		const body = req.body;
-		if (body.firstname === login && body.lastname === password) {
+		if (body.login === login && body.password === password) {
 			res.redirect('/admin/panel');
 		} else {
 			res.redirect('/admin');
