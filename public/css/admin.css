@@ -1,0 +1,130 @@
+:root {
+	--white: #fdfdfd;
+	--button-color: #fbda36;
+	--button-color-hover: #ffd500f5;
+	--nav-color: #333;
+	--bgc-main: #6d6767;
+}
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Raleway', sans-serif;
+	background-color: var(--bgc-main);
+	color: var(--white);
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	align-items: center;
+}
+
+header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+header h1 {
+	margin: 2rem auto 0.7rem auto;
+	font-size: 3rem;
+}
+header p {
+	margin-bottom: 1rem;
+	font-size: 1.4rem;
+}
+
+a {
+	display: block;
+	margin: 0 auto;
+	color: var(--white);
+	margin-top: 20px;
+	padding: 5px;
+	font-weight: bold;
+	text-decoration: none;
+	letter-spacing: 1px;
+	text-align: center;
+	border-bottom: solid 2px var(--button-color);
+}
+
+a:hover {
+	border-color: var(--button-color-hover);
+}
+h2 {
+	margin: 1rem auto;
+	font-size: 2rem;
+	border-bottom: solid 2px var(--button-color);
+}
+
+form {
+	width: 70%;
+	margin-top: 2rem;
+}
+
+.form-box {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 22%;
+}
+
+input {
+	display: flex;
+	height: 25%;
+	outline: none;
+	/* padding: 10px; */
+}
+input[type='text'] {
+	border: none;
+	font-size: 1rem;
+	padding: 1rem 1rem;
+	border-radius: 3px;
+	margin: 0.6rem;
+	text-align: center;
+}
+input[type='text']:focus {
+	border: 3px solid var(--button-color);
+}
+
+.form-box button {
+	width: 100%;
+	background-color: var(--button-color);
+	border-radius: 3px;
+	border: none;
+	cursor: pointer;
+	font-size: 1rem;
+	line-height: 1.6em;
+	margin-left: 2rem;
+	outline: none;
+	padding: 4px;
+	transition: background-color 0.5s;
+	color: var(--white);
+}
+button:hover {
+	background-color: var(--button-color-hover);
+}
+
+.table {
+	border: 4px solid var(--nav-color);
+	text-align: center;
+	width: 80%;
+}
+
+.worker-table {
+	width: 60%;
+}
+
+td,
+tr {
+	border: 1px solid black;
+	padding: 6px;
+}
+th {
+	text-transform: uppercase;
+	font-size: 20px;
+	border: 2px solid black;
+}

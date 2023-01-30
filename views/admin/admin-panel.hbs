@@ -1,0 +1,56 @@
+<header>
+	<h1>Admin Panel</h1>
+	<p>Add an employee and assign him a task</p>
+	<a href='/'>Back to home page</a>
+</header>
+
+<form action='/admin/panel' method='POST'>
+
+	<div class='form-box'>
+		<input name='workerFirstname' type='text' placeholder='Type worker firstname' />
+		<input name='workerLastname' type='text' placeholder='Type worker lastname' />
+		<input name='machine' type='text' placeholder='Worker machine' />
+		<button>Add worker</button>
+	</div>
+
+</form>
+
+<h2>Worker list</h2>
+
+<table class='worker-table table'>
+	<tr>
+		<th>ID</th>
+		<th>Worker</th>
+		<th>Machine</th>
+	</tr>
+
+	{{#each workers}}
+		<tr>
+			<td>{{this.id}}</td>
+			<td>{{this.name}} {{this.lastname}}</td>
+			<td>{{this.machine}}</td>
+		</tr>
+	{{/each}}
+</table>
+
+<h2>Tasks list</h2>
+
+<table class='task-table table'>
+	<tr>
+		<th>Task ID</th>
+		<th>Current task</th>
+		<th>Project name</th>
+		<th>Processing status</th>
+		<th>Processing stage</th>
+		<th>Worker</th>
+
+	</tr>
+	<tr>
+		<td>1</td>
+		<td>17_025A_T_50_0_1</td>
+		<td>NAAD010</td>
+		<td>In progress</td>
+		<td>CNC</td>
+		<td>Marian Kowalski</td>
+	</tr>
+</table>
