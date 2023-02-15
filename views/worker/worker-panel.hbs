@@ -1,0 +1,36 @@
+<header>
+	<h1>Worker Panel</h1>
+	<p>Welcome <strong>{{workerName}} {{workerLastname}}</strong>. Let's start your work!</p>
+	<a href='/'>Back to home page</a>
+
+</header>
+
+<h2>Tasks list</h2>
+
+<table class='task-table table'>
+	<tr>
+		<th>Task ID</th>
+		<th>Current task</th>
+		<th>Project name</th>
+		<th>Start of work</th>
+		<th>Finish of work</th>
+		<th>Execution time</th>
+		<th>Job status</th>
+
+	</tr>
+
+	<tr>
+		<td>1</td>
+		<td>17_023A_T_20_0_1_003</td>
+		<td>NAAD017</td>
+		<td>cos</td>
+		<td>cos</td>
+		<td>co</td>
+		<td><select class='progress' name='progress'>
+				{{#each progressStatuses}}
+					<option value='{{this}}'>{{this}}</option>
+				{{/each}}
+			</select></td>
+
+	</tr>
+</table>
