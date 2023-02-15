@@ -1,3 +1,4 @@
+import * as dotenv from 'dotenv';
 import * as express from 'express';
 import 'express-async-errors';
 import { static as expressStatic, urlencoded } from 'express';
@@ -7,6 +8,9 @@ import { homeRouter } from './routers/home';
 import { workerRouter } from './routers/worker';
 import { adminRouter } from './routers/admin';
 
+import './config/db';
+
+dotenv.config({ path: '.env' });
 const app = express();
 
 app.use(methodOverride('_method'));
