@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+require('dotenv').config({ path: '.env' });
 import * as express from 'express';
 import 'express-async-errors';
 import { static as expressStatic, urlencoded } from 'express';
@@ -7,10 +7,11 @@ import * as methodOverride from 'method-override';
 import { homeRouter } from './routers/home';
 import { workerRouter } from './routers/worker';
 import { adminRouter } from './routers/admin';
+import { handlebarsHelpers } from './utils/handlebars-helpers';
 
 import './config/db';
 
-dotenv.config({ path: '.env' });
+// dotenv.config({ path: '/.env' }) - doesn't work
 const app = express();
 
 app.use(methodOverride('_method'));
@@ -24,7 +25,7 @@ app.engine(
 	'.hbs',
 	engine({
 		extname: '.hbs',
-		//helpers: ...
+		helpers: handlebarsHelpers,
 	})
 );
 
@@ -38,3 +39,5 @@ app.use('/worker', workerRouter);
 app.listen(3001, '0.0.0.0', () => {
 	console.log('Server is listening on http://localhost:3001');
 });
+
+// TODO: Zrobic przypisywanie danych hbs dla admin i worker
