@@ -16,7 +16,7 @@ export class AdminRecord {
 		this.lastname = obj.lastname;
 	}
 
-	async insert(): Promise<string> {
+	async insertWorker(): Promise<string> {
 		if (!this.id) {
 			this.id = uuid();
 		}
@@ -29,7 +29,7 @@ export class AdminRecord {
 
 		return this.id;
 	}
-	static async listAll(): Promise<AdminRecord[]> {
+	static async listAllWorkers(): Promise<AdminRecord[]> {
 		const [results] = (await pool.execute('SELECT * FROM `workers`')) as AdminRecordResult;
 		return results.map(obj => new AdminRecord(obj));
 	}
