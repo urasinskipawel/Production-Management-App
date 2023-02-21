@@ -6,11 +6,11 @@ type MachineRecordResult = [MachineRecord[], FieldPacket[]];
 
 export class MachineRecord {
 	id?: string;
-	name: string;
+	machine: string;
 
 	constructor(obj: MachineRecord) {
 		this.id = obj.id;
-		this.name = obj.name;
+		this.machine = obj.machine;
 	}
 
 	static async listAllMachines(): Promise<MachineRecord[]> {
