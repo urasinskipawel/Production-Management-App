@@ -1,13 +1,11 @@
 import { Router, Request, Response } from 'express';
+import { progressStatuses } from '../utils/constants';
+import { processSteps } from '../utils/constants';
+import { AdminRecord } from '../records/admin-record';
+import { MachineRecord } from '../records/machine-record';
+import { TaskRecord } from '../records/task-record';
 
 export const adminRouter = Router();
-
-const login = 'admin';
-const password = '123';
-
-let counter = 1;
-
-const workers: [{}] = [{}];
 
 adminRouter
 	.get('/', async (req: Request, res: Response): Promise<void> => {
@@ -18,26 +16,33 @@ adminRouter
 
 	.post('/', async (req: Request, res: Response): Promise<void> => {
 		const body = req.body;
-		if (body.login === login && body.password === password) {
+		if (body.login === process.env.ADMIN_LOGIN && body.password === process.env.ADMIN_PASSWORD) {
 			res.redirect('/admin/panel');
 		} else {
 			res.redirect('/admin');
 		}
 	})
+
 	.get('/panel', async (req: Request, res: Response): Promise<void> => {
+		const workersList = await AdminRecord.listAllWorkers();
+		const tasksList = await TaskRecord.listAllTasks();
+		const machinesList = await MachineRecord.listAllMachines();
+		// console.log(workersList);
 		res.render('admin/admin-panel', {
 			style: 'admin.css',
-			workers,
+			workersList,
+			tasksList,
+			machinesList,
+			progressStatuses,
+			processSteps,
 		});
 	})
 
 	.post('/panel', async (req: Request, res: Response): Promise<void> => {
-		workers.push({
-			id: counter++,
-			name: req.body.workerFirstname,
-			lastname: req.body.workerLastname,
-			machine: req.body.machine,
-		});
-
+		const newWorker = new AdminRecord(req.body);
+		await newWorker.insertWorker();
+		// const newTask = new TaskRecord(req.body);
+		// await newTask.insertTask();
+		// TODO2: Gryzie sie dodowanie newTask i newWorker
 		res.redirect('/admin/panel');
 	});

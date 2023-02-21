@@ -2,20 +2,25 @@
 	<h1>Admin Panel</h1>
 	<p>Add an employee and assign him a task</p>
 	<a href='/'>Back to home page</a>
+
 </header>
+
+<h2>Worker list</h2>
 
 <form action='/admin/panel' method='POST'>
 
 	<div class='form-box'>
-		<input name='workerFirstname' type='text' placeholder='Type worker firstname' />
-		<input name='workerLastname' type='text' placeholder='Type worker lastname' />
-		<input name='machine' type='text' placeholder='Worker machine' />
+		<input name='firstname' type='text' placeholder='Type worker firstname' />
+		<input name='lastname' type='text' placeholder='Type worker lastname' />
+		<select class='machine' name='machine'>
+			{{#each machinesList}}
+				<option value='{{this.machine}}'>{{this.machine}}</option>
+			{{/each}}
+		</select>
 		<button>Add worker</button>
 	</div>
 
 </form>
-
-<h2>Worker list</h2>
 
 <table class='worker-table table'>
 	<tr>
@@ -24,16 +29,27 @@
 		<th>Machine</th>
 	</tr>
 
-	{{#each workers}}
+	{{#each workersList}}
 		<tr>
-			<td>{{this.id}}</td>
-			<td>{{this.name}} {{this.lastname}}</td>
+			<td>{{showShortId this.id}}</td>
+			<td>{{this.firstname}} {{this.lastname}}</td>
 			<td>{{this.machine}}</td>
 		</tr>
 	{{/each}}
 </table>
 
 <h2>Tasks list</h2>
+
+<form action='/admin/panel' method='POST'>
+
+	<div class='form-box'>
+		<input name='drawing' type='text' placeholder='Type number of drawing' />
+		<input name='project' type='text' placeholder='Type number of project' />
+
+		<button>Add Task</button>
+	</div>
+
+</form>
 
 <table class='task-table table'>
 	<tr>
@@ -45,12 +61,35 @@
 		<th>Worker</th>
 
 	</tr>
-	<tr>
-		<td>1</td>
-		<td>17_025A_T_50_0_1</td>
-		<td>NAAD010</td>
-		<td>In progress</td>
-		<td>CNC</td>
-		<td>Marian Kowalski</td>
-	</tr>
+
+	{{#each tasksList}}
+		<tr>
+			<td>{{showShortId this.id}}</td>
+			<td>{{this.drawing}}</td>
+			<td>{{this.project}}</td>
+			<td>
+				<select class='progress' name='progress'>
+					{{#each ../progressStatuses}}
+						<option value='{{this}}'>{{this}}</option>
+					{{/each}}
+				</select>
+			</td>
+			<td>
+				<select class='steps' name='steps'>
+					{{#each ../processSteps}}
+						<option value='{{this}}'>{{this}}</option>
+					{{/each}}
+				</select>
+			</td>
+			<td>
+				<select class='machine' name='machine'>
+					{{#each ../workersList}}
+						<option value='{{this.firstname}} {{this.lastname}}'>{{this.firstname}} {{this.lastname}}</option>
+					{{/each}}
+				</select>
+			</td>
+
+		</tr>
+	{{/each}}
+
 </table>
