@@ -1,0 +1,17 @@
+<form action='/admin/panel/add-worker' method='POST'>
+	<h2>Add new worker</h2>
+
+	<div class='form-box worker-box'>
+		<input class='firstname' name='firstname' type='text' placeholder='Type worker firstname' />
+		<input class='lastname' name='lastname' type='text' placeholder='Type worker lastname' />
+		<select class='machine' name='machine'>
+			{{#each machinesList}}
+				<option value='{{this.machine}}'>{{this.machine}}</option>
+			{{/each}}
+		</select>
+	</div>
+	<button>Add worker</button>
+	<a href='/admin/panel'>Back to admin panel</a>
+
+</form>
+

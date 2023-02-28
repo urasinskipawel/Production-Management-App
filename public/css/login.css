@@ -47,14 +47,23 @@ form h2 {
 	height: 22%;
 }
 
+.worker-box {
+	height: 28%;
+}
+
 input {
 	display: flex;
 	height: 40%;
 	outline: none;
-	/* padding: 10px; */
+}
+
+.firstname,
+.lastname {
+	height: 22.5%;
 }
 input[type='text'],
-input[type='password'] {
+input[type='password'],
+.machine {
 	border: none;
 	font-size: 1.4rem;
 	padding: 1rem 1rem;
@@ -63,6 +72,11 @@ input[type='password'] {
 input[type='text']:focus,
 input[type='password']:focus {
 	border: 3px solid var(--button-color);
+}
+
+.machine {
+	padding: 0.41rem 2.4rem;
+	text-align: center;
 }
 
 button {

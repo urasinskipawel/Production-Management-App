@@ -5,28 +5,16 @@
 
 </header>
 
-<h2>Worker list</h2>
+<h2>Workers list</h2>
 
-<form action='/admin/panel' method='POST'>
-
-	<div class='form-box'>
-		<input name='firstname' type='text' placeholder='Type worker firstname' />
-		<input name='lastname' type='text' placeholder='Type worker lastname' />
-		<select class='machine' name='machine'>
-			{{#each machinesList}}
-				<option value='{{this.machine}}'>{{this.machine}}</option>
-			{{/each}}
-		</select>
-		<button>Add worker</button>
-	</div>
-
-</form>
+<p>If you want to add a new worker, go to the adding worker form <a class="form-link" href='/admin/panel/add-worker'>here</a> </p>
 
 <table class='worker-table table'>
 	<tr>
 		<th>ID</th>
 		<th>Worker</th>
 		<th>Machine</th>
+		<th>Remove</th>
 	</tr>
 
 	{{#each workersList}}
@@ -34,37 +22,30 @@
 			<td>{{showShortId this.id}}</td>
 			<td>{{this.firstname}} {{this.lastname}}</td>
 			<td>{{this.machine}}</td>
+			<td><button>Delete</button></td>
 		</tr>
 	{{/each}}
 </table>
 
 <h2>Tasks list</h2>
 
-<form action='/admin/panel' method='POST'>
-
-	<div class='form-box'>
-		<input name='drawing' type='text' placeholder='Type number of drawing' />
-		<input name='project' type='text' placeholder='Type number of project' />
-
-		<button>Add Task</button>
-	</div>
-
-</form>
+<p>If you want to assign a task to worker, go to the adding task form <a class="form-link" href='/admin/panel/add-task'>here</a> </p>
 
 <table class='task-table table'>
 	<tr>
-		<th>Task ID</th>
+		{{!-- <th>Task ID</th> --}}
 		<th>Current task</th>
 		<th>Project name</th>
 		<th>Processing status</th>
 		<th>Processing stage</th>
 		<th>Worker</th>
+		<th>Update work</th>
 
 	</tr>
 
 	{{#each tasksList}}
 		<tr>
-			<td>{{showShortId this.id}}</td>
+			{{!-- <td>{{showShortId this.id}}</td> --}}
 			<td>{{this.drawing}}</td>
 			<td>{{this.project}}</td>
 			<td>
@@ -88,7 +69,7 @@
 					{{/each}}
 				</select>
 			</td>
-
+			<td><button>Save</button></td>
 		</tr>
 	{{/each}}
 

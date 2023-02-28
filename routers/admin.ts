@@ -15,8 +15,8 @@ adminRouter
 	})
 
 	.post('/', async (req: Request, res: Response): Promise<void> => {
-		const body = req.body;
-		if (body.login === process.env.ADMIN_LOGIN && body.password === process.env.ADMIN_PASSWORD) {
+		const { login, password } = req.body;
+		if (login === process.env.ADMIN_LOGIN && password === process.env.ADMIN_PASSWORD) {
 			res.redirect('/admin/panel');
 		} else {
 			res.redirect('/admin');
@@ -26,23 +26,61 @@ adminRouter
 	.get('/panel', async (req: Request, res: Response): Promise<void> => {
 		const workersList = await AdminRecord.listAllWorkers();
 		const tasksList = await TaskRecord.listAllTasks();
-		const machinesList = await MachineRecord.listAllMachines();
-		// console.log(workersList);
 		res.render('admin/admin-panel', {
 			style: 'admin.css',
 			workersList,
 			tasksList,
-			machinesList,
 			progressStatuses,
 			processSteps,
 		});
 	})
 
-	.post('/panel', async (req: Request, res: Response): Promise<void> => {
-		const newWorker = new AdminRecord(req.body);
-		await newWorker.insertWorker();
-		// const newTask = new TaskRecord(req.body);
-		// await newTask.insertTask();
-		// TODO2: Gryzie sie dodowanie newTask i newWorker
+	.get('/panel/add-worker', async (req: Request, res: Response): Promise<void> => {
+		const machinesList = await MachineRecord.listAllMachines();
+		res.render('admin/add-worker', {
+			style: 'login.css',
+			machinesList,
+		});
+	})
+
+	.post('/panel/add-worker', async (req: Request, res: Response): Promise<void> => {
+		const { firstname, lastname } = req.body;
+		const worker = new AdminRecord({
+			...req.body,
+			firstname,
+			lastname,
+		});
+
+		if (await AdminRecord.isWorkerExist(firstname, lastname)) {
+			throw new Error(`Worker ${firstname} ${lastname} is already exist`);
+		} else {
+			const newWorker = new AdminRecord(worker);
+			await newWorker.insertWorker();
+		}
+		res.redirect('/admin/panel');
+	})
+
+	.get('/panel/add-task', async (req: Request, res: Response): Promise<void> => {
+		res.render('admin/add-task', {
+			style: 'login.css',
+		});
+	})
+
+	.post('/panel/add-task', async (req: Request, res: Response): Promise<void> => {
+		const { drawing, project } = req.body;
+
+		const task = new TaskRecord({
+			...req.body,
+			drawing,
+			project,
+		});
+		if (await TaskRecord.isTaskExist(drawing, project)) {
+			throw new Error(`Worker ${drawing} ${project} is already exist`);
+		} else {
+			const newWorker = new TaskRecord(task);
+			await newWorker.insertTask();
+		}
 		res.redirect('/admin/panel');
 	});
+
+// TODO : Nie dziala walidacja. Dodaje taki sam projekt
