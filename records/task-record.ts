@@ -10,6 +10,14 @@ export class TaskRecord {
 	project: string;
 
 	constructor(obj: TaskRecord) {
+		if (!obj.drawing || obj.drawing.length !== 20) {
+			throw new Error('The drawing name must be 20 characters long.');
+		}
+
+		if (!obj.project || obj.project.length !== 7) {
+			throw new Error('The project name must be 7 characters long.');
+		}
+
 		this.id = obj.id;
 		this.drawing = obj.drawing;
 		this.project = obj.project;
@@ -32,5 +40,17 @@ export class TaskRecord {
 	static async listAllTasks(): Promise<TaskRecord[]> {
 		const [results] = (await pool.execute('SELECT * FROM `tasks`')) as TaskRecordResult;
 		return results.map(obj => new TaskRecord(obj));
+	}
+
+	static async isTaskExist(drawing: string, project: string): Promise<boolean> {
+		const [results] = (await pool.execute(
+			'SELECT `drawing`, `project` FROM `tasks` WHERE `project` = :drawing AND `project` =:project',
+			{
+				drawing,
+				project,
+			}
+		)) as TaskRecordResult;
+
+		return results.length > 0;
 	}
 }

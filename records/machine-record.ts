@@ -1,5 +1,4 @@
 import { pool } from '../config/db';
-import { v4 as uuid } from 'uuid';
 import { FieldPacket } from 'mysql2';
 
 type MachineRecordResult = [MachineRecord[], FieldPacket[]];
