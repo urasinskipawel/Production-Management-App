@@ -8,6 +8,10 @@ export class TaskRecord {
 	id?: string;
 	drawing: string;
 	project: string;
+	process_statusesId: string;
+	process_stepsId: string;
+	statuses: string;
+	steps: string;
 
 	constructor(obj: TaskRecord) {
 		if (!obj.drawing || obj.drawing.length !== 20) {
@@ -21,6 +25,10 @@ export class TaskRecord {
 		this.id = obj.id;
 		this.drawing = obj.drawing;
 		this.project = obj.project;
+		this.process_statusesId = obj.process_statusesId;
+		this.process_stepsId = obj.process_stepsId;
+		this.statuses = obj.statuses;
+		this.steps = obj.steps;
 	}
 
 	async insertTask(): Promise<string> {
@@ -38,13 +46,17 @@ export class TaskRecord {
 	}
 
 	static async listAllTasks(): Promise<TaskRecord[]> {
-		const [results] = (await pool.execute('SELECT * FROM `tasks`')) as TaskRecordResult;
+		const [results] = (await pool.execute(
+			'SELECT `id`,`drawing`, `project`, `process_statusesId`, `process_stepsId` FROM `tasks`'
+		)) as TaskRecordResult;
 		return results.map(obj => new TaskRecord(obj));
 	}
 
+	
+
 	static async isTaskExist(drawing: string, project: string): Promise<boolean> {
 		const [results] = (await pool.execute(
-			'SELECT `drawing`, `project` FROM `tasks` WHERE `project` = :drawing AND `project` =:project',
+			'SELECT `drawing`, `project` FROM `tasks` WHERE `drawing` = :drawing AND `project` =:project',
 			{
 				drawing,
 				project,
@@ -52,5 +64,18 @@ export class TaskRecord {
 		)) as TaskRecordResult;
 
 		return results.length > 0;
+	}
+
+	async updateTask(): Promise<void> {
+		await pool.execute(
+			'UPDATE `tasks` SET `drawing` = :drawing, `project` = :project, `process_statusesId` = :process_statusesId, `process_stepsId` = :process_stepsId WHERE `id` = :id',
+			{
+				id: this.id,
+				drawing: this.drawing,
+				project: this.project,
+				process_statusesId: this.process_statusesId,
+				process_stepsId: this.process_stepsId,
+			}
+		);
 	}
 }

@@ -13,7 +13,7 @@ export class MachineRecord {
 	}
 
 	static async listAllMachines(): Promise<MachineRecord[]> {
-		const [results] = (await pool.execute('SELECT * FROM `machines`')) as MachineRecordResult;
+		const [results] = (await pool.execute('SELECT `machine` FROM `machines`')) as MachineRecordResult;
 		return results.map(obj => new MachineRecord(obj));
 	}
 }

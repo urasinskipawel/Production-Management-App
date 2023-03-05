@@ -51,15 +51,21 @@ export class AdminRecord {
 
 		return this.id;
 	}
+
 	static async listAllWorkers(): Promise<AdminRecord[]> {
 		const [results] = (await pool.execute(
-			'SELECT `workers`.`id`,`workers`.`firstname`, `workers`.`lastname`, `machines`.`machine`FROM `workers` JOIN `machines` ON `workers`.`machinesId` = `machines`.`id`'
+			'SELECT `workers`.`id`, `workers`.`firstname`,`workers`.`tasksId`, `workers`.`lastname`, `machines`.`machine`, `tasks`.`drawing`, `tasks`.`project` FROM `workers` LEFT JOIN `machines` ON `workers`.`machinesId` = `machines`.`id` LEFT JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id`'
 		)) as AdminRecordResult;
 		return results.map(obj => new AdminRecord(obj));
 	}
-	static async listAllWorkersTasks(): Promise<AdminRecord[]> {
+
+	static async listAllWorkersTasks(firstname: string, lastname: string): Promise<AdminRecord[]> {
 		const [results] = (await pool.execute(
-			'SELECT `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`, `tasks`.`drawing`, `tasks`.`project`, `machines`.`machine` FROM `tasks` JOIN `workers` ON `tasks`.`id` = `workers`.`tasksId` JOIN `machines` ON `workers`.`machinesId` = `machines`.`id`'
+			'SELECT `workers`.`firstname`, `workers`.`lastname`, `tasks`.`drawing`, `tasks`.`project` FROM `workers` LEFT JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id` WHERE `workers`.`firstname` = :firstname AND `workers`.`lastname` =:lastname',
+			{
+				firstname,
+				lastname,
+			}
 		)) as AdminRecordResult;
 		return results.map(obj => new AdminRecord(obj));
 	}
