@@ -82,18 +82,31 @@ input {
 	outline: none;
 }
 input[type='text'],
-.machine {
+.machine,
+.statuses,
+.steps,
+.worker {
 	border: none;
 	font-size: 1rem;
 	padding: 1rem 1rem;
 	border-radius: 3px;
 	margin: 0.6rem;
 	text-align: center;
+	cursor: pointer;
 }
 
-.machine {
-	padding: 0.41rem 2.4rem;
-	text-align: left;
+.machine,
+.machine option,
+.statuses,
+.statuses option,
+.steps,
+.steps option,
+.worker,
+.worker option {
+	padding: 0.41rem 2rem;
+	text-align: justify;
+	background-color: var(--bgc-main);
+	color: #fff;
 }
 
 input[type='text']:focus {
@@ -113,8 +126,20 @@ input[type='text']:focus {
 	padding: 4px;
 	transition: background-color 0.5s;
 	color: var(--white);
+	cursor: pointer;
 }
-button:hover {
+.save,
+.delete,
+.start,
+.finish,
+.total {
+	background-color: transparent;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+}
+
+.form-box button:hover {
 	background-color: var(--button-color-hover);
 }
 
@@ -130,12 +155,18 @@ button:hover {
 }
 
 td,
-tr {
+tr,
+th {
 	border: 1px solid black;
-	padding: 6px;
+	padding: 4px 10px;
 }
 th {
 	text-transform: uppercase;
 	font-size: 20px;
 	border: 2px solid black;
+}
+
+td:last-child,
+td:nth-child(3-5) {
+	width: 10%;
 }

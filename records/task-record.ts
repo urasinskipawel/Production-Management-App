@@ -52,7 +52,12 @@ export class TaskRecord {
 		return results.map(obj => new TaskRecord(obj));
 	}
 
-	
+	static async getCurrentTask(id: string): Promise<TaskRecord | null> {
+		const [results] = (await pool.execute('SELECT * FROM `tasks` WHERE `id` = :id', {
+			id,
+		})) as TaskRecordResult;
+		return results.length === 0 ? null : new TaskRecord(results[0]);
+	}
 
 	static async isTaskExist(drawing: string, project: string): Promise<boolean> {
 		const [results] = (await pool.execute(

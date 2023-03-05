@@ -70,6 +70,13 @@ export class AdminRecord {
 		return results.map(obj => new AdminRecord(obj));
 	}
 
+	static async getCurrentWorker(id: string): Promise<AdminRecord | null> {
+		const [results] = (await pool.execute('SELECT * FROM `workers` WHERE `id` = :id', {
+			id,
+		})) as AdminRecordResult;
+		return results.length === 0 ? null : new AdminRecord(results[0]);
+	}
+
 	static async isWorkerExist(firstname: string, lastname: string): Promise<boolean> {
 		const [results] = (await pool.execute(
 			'SELECT `firstname`, `lastname` FROM `workers` WHERE `firstname` = :firstname AND `lastname` =:lastname',
@@ -80,5 +87,11 @@ export class AdminRecord {
 		)) as AdminRecordResult;
 
 		return results.length > 0;
+	}
+
+	async deleteWorker(): Promise<void> {
+		await pool.execute('DELETE FROM `workers` WHERE `id` = :id', {
+			id: this.id,
+		});
 	}
 }

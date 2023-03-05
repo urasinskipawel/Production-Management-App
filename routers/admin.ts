@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { progressStatuses } from '../utils/constants';
-import { processSteps } from '../utils/constants';
 import { AdminRecord } from '../records/admin-record';
 import { MachineRecord } from '../records/machine-record';
+import { ProcessStatusesRecord } from '../records/process_statuses-record';
+import { ProcessStepsRecord } from '../records/process_steps-record';
 import { TaskRecord } from '../records/task-record';
 
 export const adminRouter = Router();
@@ -23,16 +23,43 @@ adminRouter
 		}
 	})
 
-	.get('/panel', async (req: Request, res: Response): Promise<void> => {
+	.get('/panel/', async (req: Request, res: Response): Promise<void> => {
 		const workersList = await AdminRecord.listAllWorkers();
 		const tasksList = await TaskRecord.listAllTasks();
+		const statusesList = await ProcessStatusesRecord.listAllStatuses();
+		const stepsList = await ProcessStepsRecord.listAllSteps();
+
 		res.render('admin/admin-panel', {
 			style: 'admin.css',
 			workersList,
 			tasksList,
-			progressStatuses,
-			processSteps,
+			statusesList,
+			stepsList,
 		});
+	})
+
+	.delete('/panel/:workerId', async (req: Request, res: Response): Promise<void> => {
+		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
+
+		worker.deleteWorker();
+		res.redirect('/admin/panel');
+	})
+
+	.patch('/panel/:taskId', async (req: Request, res: Response): Promise<void> => {
+		const task = await TaskRecord.getCurrentTask(req.params.taskId);
+		const processStep = req.body.steps === '' ? null : await ProcessStepsRecord.getCurrentStep(req.body.steps);
+		const processStatus =
+			req.body.statuses === '' ? null : await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
+
+		const worker = req.body.worker === '' ? null : await AdminRecord.getCurrentWorker(req.body.worker);
+
+		task.process_stepsId = processStep.id === null ? null : processStep.id;
+		task.process_statusesId = processStatus.id === null ? null : processStatus.id;
+		// worker.tasksId = task.id === null ? null : task.id;
+		console.log(task);
+		task.updateTask();
+
+		res.redirect('/admin/panel');
 	})
 
 	.get('/panel/add-worker', async (req: Request, res: Response): Promise<void> => {
@@ -50,7 +77,6 @@ adminRouter
 			firstname,
 			lastname,
 		});
-
 		if (await AdminRecord.isWorkerExist(firstname, lastname)) {
 			throw new Error(`Worker ${firstname} ${lastname} is already exist`);
 		} else {
@@ -75,12 +101,10 @@ adminRouter
 			project,
 		});
 		if (await TaskRecord.isTaskExist(drawing, project)) {
-			throw new Error(`Worker ${drawing} ${project} is already exist`);
+			throw new Error(`Project: ${project} with drawing number: ${drawing} was already added.`);
 		} else {
 			const newWorker = new TaskRecord(task);
 			await newWorker.insertTask();
 		}
 		res.redirect('/admin/panel');
 	});
-
-// TODO : Nie dziala walidacja. Dodaje taki sam projekt

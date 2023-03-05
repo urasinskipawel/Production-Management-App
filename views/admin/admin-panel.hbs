@@ -19,10 +19,12 @@
 
 	{{#each workersList}}
 		<tr>
-			<td>{{showShortId this.id}}</td>
-			<td>{{this.firstname}} {{this.lastname}}</td>
-			<td>{{this.machine}}</td>
-			<td><button>Delete</button></td>
+			<form action="/admin/panel/{{this.id}}?_method=DELETE" method="POST">
+				<td>{{showShortId this.id}}</td>
+				<td>{{firstCharToUppercase this.firstname}} {{firstCharToUppercase this.lastname}}</td>
+				<td>{{this.machine}}</td>
+				<td><button class="delete" type="submit">🗑️</button></td>
+			</form>
 		</tr>
 	{{/each}}
 </table>
@@ -33,43 +35,49 @@
 
 <table class='task-table table'>
 	<tr>
-		{{!-- <th>Task ID</th> --}}
 		<th>Current task</th>
 		<th>Project name</th>
 		<th>Processing status</th>
 		<th>Processing stage</th>
 		<th>Worker</th>
 		<th>Update work</th>
-
 	</tr>
 
 	{{#each tasksList}}
 		<tr>
-			{{!-- <td>{{showShortId this.id}}</td> --}}
-			<td>{{this.drawing}}</td>
-			<td>{{this.project}}</td>
-			<td>
-				<select class='progress' name='progress'>
-					{{#each ../progressStatuses}}
-						<option value='{{this}}'>{{this}}</option>
-					{{/each}}
-				</select>
-			</td>
-			<td>
-				<select class='steps' name='steps'>
-					{{#each ../processSteps}}
-						<option value='{{this}}'>{{this}}</option>
-					{{/each}}
-				</select>
-			</td>
-			<td>
-				<select class='machine' name='machine'>
-					{{#each ../workersList}}
-						<option value='{{this.firstname}} {{this.lastname}}'>{{this.firstname}} {{this.lastname}}</option>
-					{{/each}}
-				</select>
-			</td>
-			<td><button>Save</button></td>
+			 <form action="/admin/panel/{{this.id}}?_method=PATCH" method="POST">
+				<td>{{this.drawing}}</td>
+				<td>{{changeToUppercase this.project}}</td>
+				<td>
+					<select class='statuses' name='statuses'>
+						 <option value="">Select status</option>
+						{{#each ../statusesList}}
+						  <option value="{{this.id}}" {{#if (equals this.id ../process_statusesId)}}selected="selected"{{/if}}>{{this.statuses}}</option>
+						{{/each}}
+					</select>
+				</td>
+				<td>
+					
+					<select class='steps' name='steps'>
+						   <option value="">Select stage</option>
+						{{#each ../stepsList}}
+						  <option value="{{this.id}}" {{#if (equals this.id ../process_stepsId)}}selected="selected"{{/if}}>{{this.steps}}</option>
+						{{/each}}
+					</select>
+				</td>
+				<td>
+					<select class='worker' name='worker'>
+						  <option value="">Select worker</option>
+						{{#each ../workersList}}
+							 <option value="{{this.id}}" {{#if (equals ../this.id tasksId)}}selected="selected"{{/if}}>{{this.firstname}} {{this.lastname}}</option>
+						{{/each}}
+					</select>
+				</td>
+				<td>
+					<button class="save">💾</button>
+					<button class="delete">🗑️</button>
+				</td>
+			</form>
 		</tr>
 	{{/each}}
 
