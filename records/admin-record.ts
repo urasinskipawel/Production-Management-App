@@ -14,6 +14,7 @@ export class AdminRecord {
 	machine: string;
 	drawing: string;
 	project: string;
+	process_statusesId: string;
 
 	constructor(obj: AdminRecord) {
 		if (!obj.firstname || obj.firstname.length <= 2 || obj.firstname.length >= 50) {
@@ -32,6 +33,7 @@ export class AdminRecord {
 		this.machine = obj.machine;
 		this.drawing = obj.drawing;
 		this.project = obj.project;
+		this.process_statusesId = obj.process_statusesId;
 	}
 
 	async insertWorker(): Promise<string> {
@@ -61,7 +63,7 @@ export class AdminRecord {
 
 	static async listAllWorkersTasks(firstname: string, lastname: string): Promise<AdminRecord[]> {
 		const [results] = (await pool.execute(
-			'SELECT `workers`.`firstname`, `workers`.`lastname`, `tasks`.`drawing`, `tasks`.`project` FROM `workers` LEFT JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id` WHERE `workers`.`firstname` = :firstname AND `workers`.`lastname` =:lastname',
+			'SELECT `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`,`workers`.`tasksId`, `tasks`.`drawing`, `tasks`.`project`, `tasks`.`process_statusesId` FROM `workers` JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id` WHERE `workers`.`firstname` = :firstname AND `workers`.`lastname` =:lastname',
 			{
 				firstname,
 				lastname,
@@ -69,6 +71,8 @@ export class AdminRecord {
 		)) as AdminRecordResult;
 		return results.map(obj => new AdminRecord(obj));
 	}
+
+	// `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`,`workers`.`tasksId`, `tasks`.`drawing`, `tasks`.`project`
 
 	static async getCurrentWorker(id: string): Promise<AdminRecord | null> {
 		const [results] = (await pool.execute('SELECT * FROM `workers` WHERE `id` = :id', {

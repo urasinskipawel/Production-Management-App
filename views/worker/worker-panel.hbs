@@ -9,29 +9,38 @@
 
 <table class='task-table table'>
 	<tr>
-		<th>Task ID</th>
 		<th>Current task</th>
 		<th>Project name</th>
 		<th>Start of work</th>
 		<th>Finish of work</th>
-		<th>Execution time</th>
+		<th>Total time</th>
 		<th>Job status</th>
+		<th>Update work</th>
 
 	</tr>
 
-	<tr>
-		<td>
-		</td>
-		<td>17_023A_T_20_0_1_003</td>
-		<td>NAAD017</td>
-		<td></td>
-		<td class='dziala'></td>
-		<td></td>
-		<td><select class='progress' name='progress'>
-				{{#each progressStatuses}}
-					<option value='{{this}}'>{{this}}</option>
-				{{/each}}
-			</select></td>
+	{{#each workersTasksList}}
+		<tr>
+			 <form action="/worker/panel/{{this.tasksId}}/{{../workerFirstName}}/{{../workerLastname}}?_method=PATCH" method="POST">
+				<td>{{this.drawing}}</td>
+				<td>{{changeToUppercase this.project}}</td>
+				<td><button class="start">▶️</button></td>
+				<td><button class="finish">🏁</button></td>
+				<td><button class="total">🧮</button></td>
+				<td>
+					<select class='statuses' name='statuses'>
+						 <option value="">Select status</option>
+						{{#each ../statusesList}}
+						  <option value="{{this.id}}" {{#if (equals this.id ../process_statusesId)}}selected="selected"{{/if}}>{{this.statuses}}</option>
+						{{/each}}
+					</select>
+				</td>
+				<td>
+					<button class="save">💾</button>
+				</td>
+			</form>
+		</tr>
+	{{/each}}
 
-	</tr>
+	
 </table>
