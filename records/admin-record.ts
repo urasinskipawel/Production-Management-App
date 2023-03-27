@@ -1,7 +1,7 @@
 import { pool } from '../config/db';
-// import { ValidationError } from '../utils/errors';
 import { v4 as uuid } from 'uuid';
 import { FieldPacket } from 'mysql2';
+import { ValidationError } from '../utils/errors';
 
 type AdminRecordResult = [AdminRecord[], FieldPacket[]];
 
@@ -18,11 +18,11 @@ export class AdminRecord {
 
 	constructor(obj: AdminRecord) {
 		if (!obj.firstname || obj.firstname.length <= 2 || obj.firstname.length >= 50) {
-			throw new Error('The firstname must be between 2 and 50 characters');
+			throw new ValidationError('The firstname must be between 2 and 50 characters');
 		}
 
 		if (!obj.lastname || obj.lastname.length <= 2 || obj.lastname.length >= 75) {
-			throw new Error('The lastname must be between 2 and 75 characters');
+			throw new ValidationError('The lastname must be between 2 and 75 characters');
 		}
 
 		this.id = obj.id;
@@ -63,7 +63,7 @@ export class AdminRecord {
 
 	static async listAllWorkersTasks(firstname: string, lastname: string): Promise<AdminRecord[]> {
 		const [results] = (await pool.execute(
-			'SELECT `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`,`workers`.`tasksId`, `tasks`.`drawing`, `tasks`.`project`, `tasks`.`process_statusesId` FROM `workers` JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id` WHERE `workers`.`firstname` = :firstname AND `workers`.`lastname` =:lastname',
+			'SELECT `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`,`workers`.`tasksId`, `tasks`.`drawing`, `tasks`.`project`, `tasks`.`process_statusesId` FROM `workers` LEFT JOIN `tasks` ON `workers`.`tasksId` = `tasks`.`id` WHERE `workers`.`firstname` = :firstname AND `workers`.`lastname` =:lastname',
 			{
 				firstname,
 				lastname,
@@ -71,8 +71,6 @@ export class AdminRecord {
 		)) as AdminRecordResult;
 		return results.map(obj => new AdminRecord(obj));
 	}
-
-	// `workers`.`id`, `workers`.`firstname`, `workers`.`lastname`,`workers`.`tasksId`, `tasks`.`drawing`, `tasks`.`project`
 
 	static async getCurrentWorker(id: string): Promise<AdminRecord | null> {
 		const [results] = (await pool.execute('SELECT * FROM `workers` WHERE `id` = :id', {

@@ -4,6 +4,8 @@ import { MachineRecord } from '../records/machine-record';
 import { ProcessStatusesRecord } from '../records/process_statuses-record';
 import { ProcessStepsRecord } from '../records/process_steps-record';
 import { TaskRecord } from '../records/task-record';
+import { ValidationError } from '../utils/errors';
+let status: boolean = true;
 
 export const adminRouter = Router();
 
@@ -19,11 +21,11 @@ adminRouter
 		if (login === process.env.ADMIN_LOGIN && password === process.env.ADMIN_PASSWORD) {
 			res.redirect('/admin/panel');
 		} else {
-			res.redirect('/admin');
+			throw new ValidationError(`You typed wrong username or password. Please try again.`);
 		}
 	})
 
-	.get('/panel/', async (req: Request, res: Response): Promise<void> => {
+	.get('/panel', async (req: Request, res: Response): Promise<void> => {
 		const workersList = await AdminRecord.listAllWorkers();
 		const tasksList = await TaskRecord.listAllTasks();
 		const statusesList = await ProcessStatusesRecord.listAllStatuses();
@@ -35,28 +37,31 @@ adminRouter
 			tasksList,
 			statusesList,
 			stepsList,
+			status,
 		});
 	})
 
-	.delete('/panel/:workerId', async (req: Request, res: Response): Promise<void> => {
+	.delete('/panel/deleteworker/:workerId', async (req: Request, res: Response): Promise<void> => {
 		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
-
+		
 		worker.deleteWorker();
 		res.redirect('/admin/panel');
 	})
 
-	.patch('/panel/:taskId', async (req: Request, res: Response): Promise<void> => {
+	.patch('/panel/updatetask/:taskId', async (req: Request, res: Response): Promise<void> => {
+	
+
 		const task = await TaskRecord.getCurrentTask(req.params.taskId);
 		const processStep = req.body.steps === '' ? null : await ProcessStepsRecord.getCurrentStep(req.body.steps);
 		const processStatus =
 			req.body.statuses === '' ? null : await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
-
+		
 		const worker = req.body.worker === '' ? null : await AdminRecord.getCurrentWorker(req.body.worker);
 
 		task.process_stepsId = processStep.id === null ? null : processStep.id;
 		task.process_statusesId = processStatus.id === null ? null : processStatus.id;
-		// worker.tasksId = task.id === null ? null : task.id;
-		console.log(task);
+			// worker.tasksId = task.id === null ? null : task.id;
+
 		task.updateTask();
 
 		res.redirect('/admin/panel');
@@ -78,12 +83,14 @@ adminRouter
 			lastname,
 		});
 		if (await AdminRecord.isWorkerExist(firstname, lastname)) {
-			throw new Error(`Worker ${firstname} ${lastname} is already exist`);
+			throw new ValidationError(`Worker ${firstname} ${lastname} is already exist.`);
 		} else {
 			const newWorker = new AdminRecord(worker);
+
 			await newWorker.insertWorker();
 		}
-		res.redirect('/admin/panel');
+
+		res.redirect(`/admin/panel`);
 	})
 
 	.get('/panel/add-task', async (req: Request, res: Response): Promise<void> => {
@@ -101,7 +108,7 @@ adminRouter
 			project,
 		});
 		if (await TaskRecord.isTaskExist(drawing, project)) {
-			throw new Error(`Project: ${project} with drawing number: ${drawing} was already added.`);
+			throw new ValidationError(`Project: ${project} with drawing number: ${drawing} was already added.`);
 		} else {
 			const newWorker = new TaskRecord(task);
 			await newWorker.insertTask();

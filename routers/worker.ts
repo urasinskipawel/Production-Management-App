@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { AdminRecord } from '../records/admin-record';
 import { ProcessStatusesRecord } from '../records/process_statuses-record';
 import { TaskRecord } from '../records/task-record';
+import { ValidationError } from '../utils/errors';
 
 export const workerRouter = Router();
 
@@ -25,7 +26,7 @@ workerRouter
 				res.redirect(`/worker/panel/${workerFirstName}/${workerLastname}`);
 			}
 		} else {
-			res.redirect('/worker');
+			throw new ValidationError(`The user you provided does not exist. Verify the given data.`);
 		}
 	})
 
@@ -43,16 +44,23 @@ workerRouter
 		});
 	})
 
-	.patch('/panel/:taskId/:workerFirstName/:workerLastname', async (req: Request, res: Response): Promise<void> => {
-		const workerFirstName: string = req.params.workerFirstName;
-		const workerLastname: string = req.params.workerLastname;
+	.patch('/panel/updatetask/:taskId/', async (req: Request, res: Response): Promise<void> => {
 		const task = await TaskRecord.getCurrentTask(req.params.taskId);
 
-		const processStatus =
-			req.body.statuses === '' ? null : await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
+		if (!req.body.statuses) {
+			throw new ValidationError(`You have to select status of your job.`);
+		}
+
+		const processStatus = await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
 
 		task.process_statusesId = processStatus.id === null ? null : processStatus.id;
+		const tasksList = await TaskRecord.listAllTasks();
+
+		const found = tasksList.find(a => a.id === task.id);
+
+		task.process_stepsId = found.process_stepsId;
+
 		task.updateTask();
 
-		res.redirect(`/worker/panel/${workerFirstName}/${workerLastname}`);
+		res.redirect(`/worker/panel/updatetask/${task.id}`);
 	});

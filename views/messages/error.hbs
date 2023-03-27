@@ -1,4 +1,38 @@
 <div class='error'>
 	<h1>An error has occured</h1>
 	<p>{{message}}</p>
+
+	
+
+
+		{{#if (equals message 'Sorry, please try again in a few minutes.')}}
+			{{> go-home}}
+		{{/if}}
+
+		{{#if (equals message "You have to select task's processing status.")}}
+			{{> go-admin-panel}}
+		{{/if}}
+
+		{{#if (equals message "You have to select worker to perform this task.")}}
+			{{> go-admin-panel}}
+		{{/if}}
+
+		
+		{{#if (equals message "You have to select task's processing step.")}}
+			{{> go-admin-panel}}
+		{{/if}}
+
+		{{#if (equals message "You typed wrong username or password. Please try again.")}}
+			{{> go-admin-login}}
+		{{/if}}
+
+		{{#if (equals message "The user you provided does not exist. Verify the given data.")}}
+			{{> go-worker-login}}
+		{{/if}}
+
+		{{#if (equals message "You have to select status of your job.")}}
+			{{> go-worker-panel}}
+		{{/if}}
+
+
 </div>
