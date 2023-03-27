@@ -25,12 +25,14 @@ body {
 	text-align: center;
 }
 
-.error h1 {
+.error h1,
+.statement h1 {
 	margin-bottom: 0.4rem;
 	font-size: 3rem;
 }
 
-.error p {
+.error p,
+.statement p {
 	font-size: 1.4rem;
 }
 

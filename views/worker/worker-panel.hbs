@@ -1,7 +1,10 @@
 <header>
 	<h1>Worker Panel</h1>
-	<p>Welcome <strong>{{workerFirstName}} {{workerLastname}}</strong>. Let's start your work!</p>
-	<a href='/'>Back to home page</a>
+		<p>Welcome <strong>{{workerFirstName}} {{workerLastname}}</strong>. Let's start your work!</p>
+		{{> go-home}}
+
+	
+	</div>
 
 </header>
 
@@ -21,7 +24,7 @@
 
 	{{#each workersTasksList}}
 		<tr>
-			 <form action="/worker/panel/{{this.tasksId}}/{{../workerFirstName}}/{{../workerLastname}}?_method=PATCH" method="POST">
+			 <form action="/worker/panel/updatetask/{{this.tasksId}}?_method=PATCH" method="POST">
 				<td>{{this.drawing}}</td>
 				<td>{{changeToUppercase this.project}}</td>
 				<td><button class="start">▶️</button></td>
