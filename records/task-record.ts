@@ -91,4 +91,10 @@ export class TaskRecord {
 			}
 		);
 	}
+
+	async deleteTask(): Promise<void> {
+		await pool.execute('DELETE FROM `tasks` WHERE `id` = :id', {
+			id: this.id,
+		});
+	}
 }

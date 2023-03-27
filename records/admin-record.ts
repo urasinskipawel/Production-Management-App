@@ -91,6 +91,18 @@ export class AdminRecord {
 		return results.length > 0;
 	}
 
+	async updateWorker(): Promise<void> {
+		await pool.execute(
+			'UPDATE `workers` SET `id` = :id, `firstname` = :firstname, `lastname` = :lastname, `tasksId` = :tasksId WHERE `id` = :id',
+			{
+				id: this.id,
+				firstname: this.firstname,
+				lastname: this.lastname,
+				tasksId: this.tasksId,
+			}
+		);
+	}
+
 	async deleteWorker(): Promise<void> {
 		await pool.execute('DELETE FROM `workers` WHERE `id` = :id', {
 			id: this.id,

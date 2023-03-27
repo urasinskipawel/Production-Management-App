@@ -1,7 +1,8 @@
 <header>
 	<h1>Admin Panel</h1>
 	<p>Add an employee and assign him a task</p>
-	<a href='/'>Back to home page</a>
+	{{> go-home}}
+</div>
 
 </header>
 
@@ -19,7 +20,7 @@
 
 	{{#each workersList}}
 		<tr>
-			<form action="/admin/panel/{{this.id}}?_method=DELETE" method="POST">
+			<form action="/admin/panel/deleteworker/{{this.id}}/?_method=DELETE" method="POST">
 				<td>{{showShortId this.id}}</td>
 				<td>{{firstCharToUppercase this.firstname}} {{firstCharToUppercase this.lastname}}</td>
 				<td>{{this.machine}}</td>
@@ -42,10 +43,18 @@
 		<th>Worker</th>
 		<th>Update work</th>
 	</tr>
+			
 
 	{{#each tasksList}}
-		<tr>
-			 <form action="/admin/panel/{{this.id}}?_method=PATCH" method="POST">
+		<tr>	
+			{{#if (takeButtonValue ../status)}}
+			 <form action="/admin/panel/updatetask/{{this.id}}?_method=PATCH" method="POST">
+			 {{/if}}
+
+			{{#if (takeButtonValue ../status)}}
+			<form action="/admin/panel/deletetask/{{this.id}}?_method=DELETE" method="POST">
+			{{/if}}
+
 				<td>{{this.drawing}}</td>
 				<td>{{changeToUppercase this.project}}</td>
 				<td>
@@ -74,11 +83,15 @@
 					</select>
 				</td>
 				<td>
-					<button class="save">💾</button>
-					<button class="delete">🗑️</button>
+					<button class="save" name='save' value='save'>💾</button>
+					<button class="delete"  name='delete' value='delete'>🗑️</button>
+
+					
 				</td>
 			</form>
 		</tr>
 	{{/each}}
 
 </table>
+
+	

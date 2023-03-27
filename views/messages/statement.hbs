@@ -1,0 +1,21 @@
+<div class='statement'>
+
+	{{log }}
+	
+
+	{{#if (equals currentPath '/admin/panel/updatetask/')}}
+		{{> go-admin-panel}}
+		<p>The task number: {{task.drawing}} was updated.</p>
+	{{/if}}
+
+	{{#if (equals currentPath '/worker/panel/updatetask/')}}
+		{{> go-worker-panel}}
+		<p>The task number: {{task.drawing}} was updated.</p>
+	{{/if}}
+
+	{{#if (equals currentPath '/admin/panel/deleteworker/')}}
+		{{> go-admin-panel}}
+		<p>The user {{worker.firstname}} {{worker.lastname}} was deleted.</p>
+	{{/if}}
+
+</div>

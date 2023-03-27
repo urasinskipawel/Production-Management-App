@@ -43,28 +43,100 @@ adminRouter
 
 	.delete('/panel/deleteworker/:workerId', async (req: Request, res: Response): Promise<void> => {
 		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
-		
+		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.workerId.length)}`;
 		worker.deleteWorker();
-		res.redirect('/admin/panel');
+		res.redirect(`/admin/panel/deleteworker/${worker.id}`);
+	})
+
+	.get('/panel/deleteworker/:workerId', async (req: Request, res: Response): Promise<void> => {
+		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.workerId.length)}`;
+		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
+		res.render('messages/statement', {
+			style: 'error.css',
+			currentPath,
+			worker,
+		});
+	})
+
+	.get('/panel/updatetask/:taskId', async (req: Request, res: Response): Promise<void> => {
+		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.taskId.length)}`;
+		const task = await TaskRecord.getCurrentTask(req.params.taskId);
+		res.render('messages/statement', {
+			style: 'error.css',
+			task,
+			currentPath,
+		});
+	})
+
+	.get('/panel/deletetask/:taskId', async (req: Request, res: Response): Promise<void> => {
+		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.taskId.length)}`;
+		const task = await TaskRecord.getCurrentTask(req.params.taskId);
+		res.render('messages/statement', {
+			style: 'error.css',
+			task,
+			currentPath,
+		});
 	})
 
 	.patch('/panel/updatetask/:taskId', async (req: Request, res: Response): Promise<void> => {
-	
+		const save = req.body.save;
+
+		if (save) {
+			console.log('true');
+			status = true;
+		} else {
+			console.log('false');
+			status = false;
+		}
 
 		const task = await TaskRecord.getCurrentTask(req.params.taskId);
-		const processStep = req.body.steps === '' ? null : await ProcessStepsRecord.getCurrentStep(req.body.steps);
-		const processStatus =
-			req.body.statuses === '' ? null : await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
-		
-		const worker = req.body.worker === '' ? null : await AdminRecord.getCurrentWorker(req.body.worker);
 
-		task.process_stepsId = processStep.id === null ? null : processStep.id;
-		task.process_statusesId = processStatus.id === null ? null : processStatus.id;
-			// worker.tasksId = task.id === null ? null : task.id;
+		const bodyResult = '';
+		switch (bodyResult) {
+			case req.body.statuses:
+				throw new ValidationError(`You have to select task's processing status.`);
+				break;
+			case req.body.steps:
+				throw new ValidationError(`You have to select task's processing step.`);
+				break;
+			case req.body.worker:
+				throw new ValidationError(`You have to select worker to perform this task.`);
+				break;
+			default:
+				const processStep = await ProcessStepsRecord.getCurrentStep(req.body.steps);
+				const processStatus = await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
+				const worker = await AdminRecord.getCurrentWorker(req.body.worker);
 
-		task.updateTask();
+				task.process_stepsId = processStep.id === null ? null : processStep.id;
+				task.process_statusesId = processStatus.id === null ? null : processStatus.id;
+				worker.tasksId = task.id === null ? null : task.id;
 
-		res.redirect('/admin/panel');
+				task.updateTask();
+				worker.updateWorker();
+				res.redirect(`/admin/panel/updatetask/${task.id}`);
+			// res.redirect('/admin/panel');
+		}
+	})
+
+	.delete('/panel/deletetask/:taskId', async (req: Request, res: Response): Promise<void> => {
+		const deletebtn = req.body.delete;
+		const task = await TaskRecord.getCurrentTask(req.params.taskId);
+		const worker = await AdminRecord.getCurrentWorker(req.body.worker);
+
+		if (deletebtn) {
+			console.log('false');
+			status = false;
+		} else {
+			console.log('true');
+			status = true;
+
+			worker.tasksId = null;
+
+			worker.updateWorker();
+			task.deleteTask();
+
+			res.redirect(`/admin/panel/deletetask/${task.id}`);
+		}
 	})
 
 	.get('/panel/add-worker', async (req: Request, res: Response): Promise<void> => {
