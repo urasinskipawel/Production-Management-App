@@ -16,7 +16,6 @@ workerRouter
 	.post('/', async (req: Request, res: Response): Promise<void> => {
 		const { firstname, lastname } = req.body;
 		const workersList = await AdminRecord.listAllWorkers();
-
 		const foundLoginData = workersList.find(a => a.firstname === firstname && a.lastname === lastname);
 
 		if (foundLoginData) {
@@ -28,6 +27,17 @@ workerRouter
 		} else {
 			throw new ValidationError(`The user you provided does not exist. Verify the given data.`);
 		}
+	})
+
+	.get('/panel/updatetask/:taskId', async (req: Request, res: Response): Promise<void> => {
+		const task = await TaskRecord.getCurrentTask(req.params.taskId);
+		const currentPath = `/worker${req.path.slice(0, req.path.length - req.params.taskId.length)}`;
+
+		res.render('messages/statement', {
+			style: 'error.css',
+			task,
+			currentPath,
+		});
 	})
 
 	.get('/panel/:workerFirstName/:workerLastname', async (req: Request, res: Response): Promise<void> => {
@@ -52,12 +62,10 @@ workerRouter
 		}
 
 		const processStatus = await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
-
 		task.process_statusesId = processStatus.id === null ? null : processStatus.id;
+
 		const tasksList = await TaskRecord.listAllTasks();
-
 		const found = tasksList.find(a => a.id === task.id);
-
 		task.process_stepsId = found.process_stepsId;
 
 		task.updateTask();

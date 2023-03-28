@@ -1,1 +1,5 @@
-<a href='/worker/panel/{{task.firstname}}/{{task.lastname}}'>Back to worker panel</a>
+{{#if task}}
+	<a href='/worker/panel/{{task.firstname}}/{{task.lastname}}'>Back to worker panel</a>
+{{else}}
+	<a href='/worker/panel/{{worker.firstname}}/{{worker.lastname}}'>Back to worker panel</a>
+{{/if}}

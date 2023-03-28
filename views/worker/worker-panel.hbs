@@ -37,6 +37,17 @@
 						  <option value="{{this.id}}" {{#if (equals this.id ../process_statusesId)}}selected="selected"{{/if}}>{{this.statuses}}</option>
 						{{/each}}
 					</select>
+					
+					{{!-- *************************** --}}
+					{{!-- Need to get back to worker/panel/NAME/LASTNAME when task = null --}}
+					<select class='worker-data' name='firstname'>
+						  <option value="{{../workerFirstName}}" selected="selected">{{../workerFirstName}}</option>
+					</select>
+
+					<select class='worker-data' name='lastname'>
+						  <option value="{{../workerLastname}}" selected="selected">{{../workerLastname}}</option>
+					</select>
+					{{!-- *************************** --}}
 				</td>
 				<td>
 					<button class="save">💾</button>

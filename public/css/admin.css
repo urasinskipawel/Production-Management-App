@@ -109,6 +109,10 @@ input[type='text'],
 	color: #fff;
 }
 
+.worker-data {
+	display: none;
+}
+
 input[type='text']:focus {
 	border: 3px solid var(--button-color);
 }
