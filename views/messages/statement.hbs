@@ -5,17 +5,22 @@
 
 	{{#if (equals currentPath '/admin/panel/updatetask/')}}
 		{{> go-admin-panel}}
-		<p>The task number: {{task.drawing}} was updated.</p>
+		<p>The drawing: <strong>{{task.drawing}}</strong> of project: <strong>{{task.project}}</strong> was updated.</p>
 	{{/if}}
 
 	{{#if (equals currentPath '/worker/panel/updatetask/')}}
 		{{> go-worker-panel}}
-		<p>The task number: {{task.drawing}} was updated.</p>
+		<p>The drawing: <strong>{{task.drawing}}</strong> of project: <strong>{{task.project}}</strong> was updated.</p>
 	{{/if}}
 
 	{{#if (equals currentPath '/admin/panel/deleteworker/')}}
 		{{> go-admin-panel}}
-		<p>The user {{worker.firstname}} {{worker.lastname}} was deleted.</p>
+			<p>The user {{worker.firstname}} {{worker.lastname}} was deleted.</p>
+	{{/if}}
+
+	{{#if (equals currentPath '/admin/panel/deletetask/')}}
+		{{> go-admin-panel}}
+		<p>The task was deleted.</p>
 	{{/if}}
 
 </div>
