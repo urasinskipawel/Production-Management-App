@@ -2,7 +2,6 @@
 	<h1>Admin Panel</h1>
 	<p>Add an employee and assign him a task</p>
 	{{> go-home}}
-</div>
 
 </header>
 
@@ -47,14 +46,9 @@
 
 	{{#each tasksList}}
 		<tr>	
-			{{#if (takeButtonValue ../status)}}
-			 <form action="/admin/panel/updatetask/{{this.id}}?_method=PATCH" method="POST">
-			 {{/if}}
-
-			{{#if (takeButtonValue ../status)}}
-			<form action="/admin/panel/deletetask/{{this.id}}?_method=DELETE" method="POST">
-			{{/if}}
-
+		
+			<form method="POST">
+			
 				<td>{{this.drawing}}</td>
 				<td>{{changeToUppercase this.project}}</td>
 				<td>
@@ -83,8 +77,8 @@
 					</select>
 				</td>
 				<td>
-					<button class="save" name='save' value='save'>💾</button>
-					<button class="delete"  name='delete' value='delete'>🗑️</button>
+					<button formaction="/admin/panel/updatetask/{{this.id}}?_method=PATCH" class="save" id="save" name='save' value=''>💾</button>
+					<button formaction="/admin/panel/deletetask/{{this.id}}?_method=DELETE" class="delete" id="delete" name='delete' value=''>🗑️</button>
 
 					
 				</td>
@@ -93,5 +87,7 @@
 	{{/each}}
 
 </table>
+
+
 
 	

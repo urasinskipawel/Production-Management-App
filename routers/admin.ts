@@ -5,7 +5,6 @@ import { ProcessStatusesRecord } from '../records/process_statuses-record';
 import { ProcessStepsRecord } from '../records/process_steps-record';
 import { TaskRecord } from '../records/task-record';
 import { ValidationError } from '../utils/errors';
-let status: boolean = true;
 
 export const adminRouter = Router();
 
@@ -37,24 +36,20 @@ adminRouter
 			tasksList,
 			statusesList,
 			stepsList,
-			status,
 		});
 	})
 
 	.delete('/panel/deleteworker/:workerId', async (req: Request, res: Response): Promise<void> => {
 		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
-		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.workerId.length)}`;
 		worker.deleteWorker();
 		res.redirect(`/admin/panel/deleteworker/${worker.id}`);
 	})
 
 	.get('/panel/deleteworker/:workerId', async (req: Request, res: Response): Promise<void> => {
 		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.workerId.length)}`;
-		const worker = await AdminRecord.getCurrentWorker(req.params.workerId);
 		res.render('messages/statement', {
 			style: 'error.css',
 			currentPath,
-			worker,
 		});
 	})
 
@@ -70,38 +65,23 @@ adminRouter
 
 	.get('/panel/deletetask/:taskId', async (req: Request, res: Response): Promise<void> => {
 		const currentPath = `/admin${req.path.slice(0, req.path.length - req.params.taskId.length)}`;
-		const task = await TaskRecord.getCurrentTask(req.params.taskId);
 		res.render('messages/statement', {
 			style: 'error.css',
-			task,
 			currentPath,
 		});
 	})
 
 	.patch('/panel/updatetask/:taskId', async (req: Request, res: Response): Promise<void> => {
-		const save = req.body.save;
-
-		if (save) {
-			console.log('true');
-			status = true;
-		} else {
-			console.log('false');
-			status = false;
-		}
-
 		const task = await TaskRecord.getCurrentTask(req.params.taskId);
 
 		const bodyResult = '';
 		switch (bodyResult) {
 			case req.body.statuses:
 				throw new ValidationError(`You have to select task's processing status.`);
-				break;
 			case req.body.steps:
 				throw new ValidationError(`You have to select task's processing step.`);
-				break;
 			case req.body.worker:
 				throw new ValidationError(`You have to select worker to perform this task.`);
-				break;
 			default:
 				const processStep = await ProcessStepsRecord.getCurrentStep(req.body.steps);
 				const processStatus = await ProcessStatusesRecord.getCurrentStatus(req.body.statuses);
@@ -114,29 +94,25 @@ adminRouter
 				task.updateTask();
 				worker.updateWorker();
 				res.redirect(`/admin/panel/updatetask/${task.id}`);
-			// res.redirect('/admin/panel');
 		}
 	})
 
 	.delete('/panel/deletetask/:taskId', async (req: Request, res: Response): Promise<void> => {
-		const deletebtn = req.body.delete;
 		const task = await TaskRecord.getCurrentTask(req.params.taskId);
 		const worker = await AdminRecord.getCurrentWorker(req.body.worker);
 
-		if (deletebtn) {
-			console.log('false');
-			status = false;
-		} else {
-			console.log('true');
-			status = true;
-
+		if (worker) {
+			task.process_stepsId = null;
+			task.process_statusesId = null;
 			worker.tasksId = null;
-
+			task.updateTask();
 			worker.updateWorker();
 			task.deleteTask();
-
-			res.redirect(`/admin/panel/deletetask/${task.id}`);
 		}
+
+		task.deleteTask();
+
+		res.redirect(`/admin/panel/deletetask/${task.id}`);
 	})
 
 	.get('/panel/add-worker', async (req: Request, res: Response): Promise<void> => {
@@ -154,6 +130,7 @@ adminRouter
 			firstname,
 			lastname,
 		});
+
 		if (await AdminRecord.isWorkerExist(firstname, lastname)) {
 			throw new ValidationError(`Worker ${firstname} ${lastname} is already exist.`);
 		} else {
@@ -182,8 +159,8 @@ adminRouter
 		if (await TaskRecord.isTaskExist(drawing, project)) {
 			throw new ValidationError(`Project: ${project} with drawing number: ${drawing} was already added.`);
 		} else {
-			const newWorker = new TaskRecord(task);
-			await newWorker.insertTask();
+			const newTask = new TaskRecord(task);
+			await newTask.insertTask();
+			res.redirect('/admin/panel');
 		}
-		res.redirect('/admin/panel');
 	});
