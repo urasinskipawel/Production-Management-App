@@ -1,0 +1,50 @@
+{
+	"extends": ["airbnb-typescript", "plugin:import/recommended"],
+	"parserOptions": {
+		"project": "./tsconfig.json"
+	},
+	"rules": {
+		"@typescript-eslint/lines-between-class-members": ["error", "always", { "exceptAfterOverload": true }],
+		"react/jsx-filename-extension": [0],
+		"indent": "off",
+		"@typescript-eslint/indent": "error",
+		"react/jsx-props-no-spreading": "off",
+		"import/prefer-default-export": "off",
+		"import/extensions": [
+			"error",
+			"ignorePackages",
+			{
+				"js": "never",
+				"jsx": "never",
+				"ts": "never",
+				"tsx": "never"
+			}
+		],
+		"import/order": [
+			"error",
+			{
+				"groups": ["builtin", "external", "internal", ["parent", "sibling"], "object", "type", "index"],
+				"newlines-between": "always",
+				"pathGroupsExcludedImportTypes": ["builtin"],
+				"alphabetize": { "order": "asc", "caseInsensitive": true },
+				"pathGroups": [
+					{
+						"pattern": "{react,react/**,react-dom/**,next,next/**}",
+						"group": "external",
+						"position": "before"
+					},
+					{
+						"pattern": "@/**",
+						"group": "internal",
+						"position": "before"
+					},
+					{
+						"pattern": "./**.module.css",
+						"group": "index",
+						"position": "after"
+					}
+				]
+			}
+		]
+	}
+}

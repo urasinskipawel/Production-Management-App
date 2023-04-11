@@ -2,10 +2,12 @@
 	"name": "production-management",
 	"version": "1.0.0",
 	"description": "Production Management Application",
-	"main": "index.js",
+	"main": "index.ts",
 	"scripts": {
 		"start": "ts-node index.ts -watch",
-		"start:dev": "tsnd index.ts -watch"
+		"start:dev": "tsnd index.ts -watch",
+		"lint": "eslint **/*.ts",
+		"lint-and-fix": "eslint . --ext .ts --fix"
 	},
 	"keywords": [
 		"Management",
@@ -29,6 +31,13 @@
 		"@types/method-override": "^0.0.32",
 		"@types/node": "^18.11.11",
 		"@types/uuid": "^9.0.0",
+		"@typescript-eslint/eslint-plugin": "^5.58.0",
+		"@typescript-eslint/parser": "^5.58.0",
+		"eslint": "^8.38.0",
+		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-import": "^2.27.5",
+		"prettier": "^2.8.7",
 		"ts-node": "^10.9.1",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^4.9.3"
