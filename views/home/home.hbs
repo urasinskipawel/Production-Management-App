@@ -9,14 +9,9 @@
 	</div>
 
 </header>
-<nav class='nav'>
-	<ul class='nav-bar'>
-		<li class='nav-bar-item'><a href='/'>Home</a></li>
-		<li class='nav-bar-item'><a href='/admin'>Admin</a></li>
-		<li class='nav-bar-item'><a href='/worker'>Worker</a></li>
-		<li class='nav-bar-item'><a href='/support'>Support</a></li>
-	</ul>
-</nav>
+
+{{> nav-bar}}
+
 <main class='content'>
 	<h2>About us</h2>
 
@@ -48,25 +43,4 @@
 	</div>
 </main>
 
-<footer class='footer'>
-	<div class='footer-text-box'>
-		<p>Copyright &copy; 2023 All Right Reserved by Urasiński Paweł</p>
-	</div>
-	<div class='footer-icon-box'>
-		<span>Follow us on: </span>
-		<a href='https://facebook.com/uras.pawel' alt='Facebook' title='Facebook' target='_blank'><i
-				class='fab fa-facebook'
-			></i></a>
-		<a href='https://www.linkedin.com/in/pawe%C5%82-urasi%C5%84ski' alt='Linkedin' title='Linkedin' target='_blank'><i
-				class='fab fa-linkedin'
-			></i></a>
-		<a href='https://github.com/urasinskipawel' alt='Github' title='Github' target='_blank'><i
-				class='fab fa-github'
-			></i></a>
-		<a href='https://www.youtube.com/@paweurasinski4075/' alt='Youtube' title='Youtube' target='_blank'><i
-				class='fab fa-youtube'
-			></i></a>
-		<a href='/'><i class='fa-solid fa-arrow-up' alt='Home' title='Home'></i></a>
-	</div>
-
-</footer>
+{{> footer-bar}}
