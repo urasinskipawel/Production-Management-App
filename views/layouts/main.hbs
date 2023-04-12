@@ -12,5 +12,20 @@
 
 		{{{body}}}
 
+		<script>
+			const startJob = (startTime) => { const startBtn = document.getElementById("start"); startBtn.innerHTML = startTime;
+			startBtn.value = startTime };
+		</script>
+
+		<script>
+			const finishJob = (finishTime) => { const startBtn = document.getElementById("finish"); startBtn.innerHTML =
+			finishTime; startBtn.value = finishTime }
+		</script>
+
+		<script>
+			const getTotalTime = (finishTime, startTime) => { const startBtn = document.getElementById("total");
+			startBtn.innerHTML = finishTime - startTime; }
+		</script>
+
 	</body>
 </html>

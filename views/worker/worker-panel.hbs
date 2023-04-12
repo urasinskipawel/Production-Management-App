@@ -3,7 +3,7 @@
 		<p>Welcome <strong>{{workerFirstName}} {{workerLastname}}</strong>. Let's start your work!</p>
 		{{> go-home}}
 
-	
+		
 	</div>
 
 </header>
@@ -24,12 +24,21 @@
 
 	{{#each workersTasksList}}
 		<tr>
+			{{#if this.tasksId}}
+		
 			 <form action="/worker/panel/updatetask/{{this.tasksId}}?_method=PATCH" method="POST">
 				<td>{{this.drawing}}</td>
-				<td>{{changeToUppercase this.project}}</td>
-				<td><button class="start">▶️</button></td>
-				<td><button class="finish">🏁</button></td>
-				<td><button class="total">🧮</button></td>
+				<td>{{this.project}}</td>
+			
+			
+				<td>
+					<button type="button" class="start" id="start" name='start' value='' onclick="startJob('{{../currentTime}}')" onclick="totalTime()" >▶️</button>
+				</td>
+				<td>
+					<button type="button" class="finish" id="finish" name='finish' value='' onclick="finishJob('{{../currentTime}}')">🏁</button>
+				<td>
+					<button type="button" class="total" id="total" name='total' value='' onclick="getTotalTime(20,10)">🧮</button>
+				</td>
 				<td>
 					<select class='statuses' name='statuses'>
 						 <option value="">Select status</option>
@@ -53,6 +62,7 @@
 					<button class="save">💾</button>
 				</td>
 			</form>
+				{{/if}}
 		</tr>
 	{{/each}}
 
