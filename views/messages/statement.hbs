@@ -22,5 +22,11 @@
 		{{> go-admin-panel}}
 		<p>The task was deleted.</p>
 	{{/if}}
+	
+	{{#if (equals currentPath '/support/contact/')}}		
+		{{> go-support}}
+		<p>Thank you <strong>{{user}}</strong> your message. We will answer them as soon as possible.</p>
+	{{/if}}
+
 
 </div>

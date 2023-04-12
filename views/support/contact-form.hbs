@@ -1,0 +1,11 @@
+<form action='/support/contact' method='post'>
+	<h2>Contact Us</h2>
+	<div class='form-box'>
+		<input type='text' placeholder='Your name' name='name' required />
+		<input type='email'placeholder='Your email' name='email' required />
+		<input type='text' placeholder='Subject' name='subject' required />
+		<textarea placeholder='Your message' name='message' cols="50" rows="10"></textarea>
+	</div>
+	<button>Send</button>
+		{{> go-support}}
+</form>
