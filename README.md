@@ -25,12 +25,12 @@ The entire application is divided into individual sections. The home page presen
 
 - Node JS
 - Express JS
-- Handlebars JS,
-- Typescript,
+- Handlebars JS
+- Typescript
 - SQL (MariaDB or MySQL)
 - REST
 - CSS
-- Eslint + airbnb,
+- Eslint + airbnb
 
 ## Installation <a name="installation"/> 💾
 
@@ -68,7 +68,7 @@ If you want to test this app you have to follow the steps below :
 
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/7gs52Jd/heidi.png" alt="heidi" border="0" width = "400px" /></a>
 
-5. Download the database dump from [here](https://wetransfer.com/downloads/a6757db3c2be15a8d8e812ce2861844d20230405220020/717146).
+5. Download the database dump from [here](https://files.fm/u/259dkna3w).
 
 6. Import the file. Use RMB and select "Run"
 
