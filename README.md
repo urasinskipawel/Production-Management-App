@@ -68,7 +68,7 @@ If you want to test this app you have to follow the steps below :
 
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/7gs52Jd/heidi.png" alt="heidi" border="0" width = "400px" /></a>
 
-5. Download the database dump from [here](https://files.fm/u/259dkna3w).
+5. Download the database dump from [here](https://files.fm/u/tcrzaac49).
 
 6. Import the file. Use RMB and select "Run"
 
@@ -104,6 +104,6 @@ Enjoy!
 Currently, the application is at the stage of a working prototype that can be used.
 I am gradually implementing improvements and fixing bugs.
 
-The first improvement I'm going to implement is the ability to assign multiple tasks to one worker. It will allow planning work more dynamically. I'm also goint to improve application error handling, which will simplify program maintenance
+The first improvement I'm going to implement is the ability to assign multiple tasks to one worker. It will allow planning work more dynamically. I'm also going to improve application error handling, which will simplify program maintenance
 
 I am open to contact, suggestions and cooperation. If you have any ideas or encounter a problem, please email me at: uraspawel@gmail.com
